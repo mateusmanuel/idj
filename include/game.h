@@ -20,11 +20,10 @@ class Game
     SDL_Renderer* renderer;
     State* state;
 
-    Game(string title, int width, int height);
-
   public:
     ~Game();
 
+    void Init(string title, int width, int height);
     static Game& GetInstance();
     void Run();
     SDL_Renderer* GetRenderer();
