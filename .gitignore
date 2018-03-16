@@ -1,0 +1,12 @@
+# Lib and objects
+lib
+obj
+*.o
+*.so*
+*.d
+
+# Temporary files
+*.swp
+*.swo
+*~
+
