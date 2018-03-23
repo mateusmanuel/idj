@@ -22,7 +22,6 @@ void Game::Init(string title, int width, int height)
     }
 
     int imageFlags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
-
     if(IMG_Init(imageFlags) != imageFlags)
     {
         printf("[ERROR] IMG_Init: %s\n", IMG_GetError());
@@ -30,7 +29,6 @@ void Game::Init(string title, int width, int height)
     }
 
     int mixFlags = MIX_INIT_OGG | MIX_INIT_MP3;
-
     if(Mix_Init(mixFlags) != mixFlags)
     {
       printf("[ERROR] Mix_Init: %s\n", Mix_GetError());
@@ -44,7 +42,6 @@ void Game::Init(string title, int width, int height)
     }
 
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
-
     if(window == nullptr)
     {
         printf("[ERROR] SDL_CreateWindow: %s\n", Mix_GetError());
@@ -52,12 +49,13 @@ void Game::Init(string title, int width, int height)
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
     if(renderer == nullptr)
     {
         printf("[ERROR] SDL_CreateRenderer: %s\n", SDL_GetError());
         return;
     }
+
+    state = new State();
 }
 
 Game::~Game()
@@ -68,6 +66,8 @@ Game::~Game()
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
+
+    delete state;
 }
 
 State& Game::GetState()
@@ -78,6 +78,19 @@ State& Game::GetState()
 SDL_Renderer* Game::GetRenderer()
 {
     return renderer;
+}
+
+void Game::Run()
+{
+    while(not state->QuitRequested())
+    {
+        state->Render();
+        state->Update(0.0);
+
+        SDL_RenderPresent(renderer);
+
+        SDL_Delay(33);
+    }
 }
 
 

@@ -7,12 +7,13 @@
 class State
 {
     private:
-        Sprite bg;
-        Music music;
+        Sprite *bg;
+        Music *music;
         bool quitRequested;
 
     public:
         State();
+        ~State();
 
         bool QuitRequested();
         void LoadAssets();
