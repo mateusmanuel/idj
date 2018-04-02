@@ -39,7 +39,6 @@ bool Music::IsOpen()
 
 Music::~Music()
 {
-    printf("[DEBUG] Destructor Music\n");
     Mix_FreeMusic(music);
 }
 

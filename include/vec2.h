@@ -9,7 +9,7 @@ class Vec2
         float x, y;
         
         Vec2();
-        Vec2(float c, float y);
+        Vec2(float x, float y);
         Vec2(const Vec2& v);
 
         Vec2 operator+(float s);

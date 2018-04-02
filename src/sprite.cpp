@@ -15,7 +15,6 @@ Sprite::Sprite(string file)
 
 Sprite::~Sprite()
 {
-    printf("[DEBUG] Destructor Sprite\n");
     SDL_DestroyTexture(texture);
 }
 
@@ -47,8 +46,6 @@ void Sprite::Render(int x, int y)
 {
     SDL_Rect destRect = SDL_Rect {x, y, clipRect.w, clipRect.h};
     SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect);
-
-    printf("[DEBUG] Render Sprite\n");
 }
 
 int Sprite::GetWidth()
