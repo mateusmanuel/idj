@@ -1,4 +1,7 @@
+#include "SDL2/SDL.h"
+
 #include "state.h"
+#include "sprite.h"
 
 State::State()
 {
@@ -6,8 +9,9 @@ State::State()
 
     music = new Music("assets/audio/stageState.ogg");
     music->Play(-1);
-    
-    bg = new Sprite("assets/img/ocean.jpg");
+        
+    bg = new GameObject();
+    bg->AddComponent(new Sprite(*bg, "assets/img/ocean.jpg"));
 }
 
 State::~State()
@@ -31,7 +35,7 @@ void State::Update(float dt)
 
 void State::Render()
 {
-    bg->Render(0, 0);
+    bg->Render();
 }
 
 bool State::QuitRequested()

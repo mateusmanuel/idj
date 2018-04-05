@@ -1,13 +1,13 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "sprite.h"
+#include "gameObject.h"
 #include "music.h"
 
 class State
 {
     private:
-        Sprite *bg;
+        GameObject *bg;
         Music *music;
         bool quitRequested;
 
