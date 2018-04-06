@@ -20,6 +20,10 @@ class Vec2
     	Vec2& operator-=(float s);
 	    Vec2& operator*=(float s);
 		Vec2& operator/=(float s);
+		Vec2 operator+(Vec2& v);
+		Vec2 operator-(Vec2& v);
+		Vec2& operator+=(Vec2& v);
+		Vec2& operator-=(Vec2& v);
 	    
 	    void Rotate(float deg);
 		Vec2& Normalize();
