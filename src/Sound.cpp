@@ -1,4 +1,4 @@
-#include "sound.h"
+#include "Sound.h"
 
 Sound::Sound(GameObject& associated) : Component(associated)
 {

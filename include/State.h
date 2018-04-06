@@ -4,8 +4,8 @@
 #include <vector>
 #include <memory>
 
-#include "gameObject.h"
-#include "music.h"
+#include "GameObject.h"
+#include "Music.h"
 
 class State
 {

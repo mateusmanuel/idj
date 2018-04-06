@@ -8,7 +8,7 @@
 #include "SDL2/SDL_mixer.h"
 #include "SDL2/SDL_ttf.h"
 
-#include "state.h"
+#include "State.h"
 
 using std::string;
 

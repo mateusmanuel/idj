@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "gameObject.h"
-#include "component.h"
+#include "GameObject.h"
+#include "Component.h"
 
 using std::string;
 

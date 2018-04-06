@@ -4,8 +4,8 @@
 #include <vector>
 #include <iostream>
 
-#include "component.h"
-#include "rect.h"
+#include "Component.h"
+#include "Rect.h"
 
 using std::vector;
 using std::string;

@@ -5,8 +5,8 @@
 
 #include "SDL2/SDL.h"
 
-#include "component.h"
-#include "gameObject.h"
+#include "Component.h"
+#include "GameObject.h"
 
 using std::string;
 

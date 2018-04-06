@@ -1,9 +1,9 @@
 #include "SDL2/SDL.h"
 
-#include "state.h"
-#include "sprite.h"
-#include "sound.h"
-#include "face.h"
+#include "State.h"
+#include "Sprite.h"
+#include "Sound.h"
+#include "Face.h"
 
 State::State()
 {

@@ -1,5 +1,5 @@
-#include "sprite.h"
-#include "game.h"
+#include "Sprite.h"
+#include "Game.h"
 
 Sprite::Sprite(GameObject& associated) : Component(associated)
 {
@@ -13,7 +13,10 @@ Sprite::Sprite(GameObject& associated, string file) : Sprite(associated)
 
 Sprite::~Sprite()
 {
-    SDL_DestroyTexture(texture);
+    if(IsOpen())
+    {
+        SDL_DestroyTexture(texture);
+    }
 }
 
 void Sprite::Open(string file)
@@ -42,7 +45,7 @@ void Sprite::SetClip(int x, int y, int w, int h)
 
 void Sprite::Render()
 {
-    SDL_Rect destRect = SDL_Rect {associated.box.x, associated.box.y, clipRect.w, clipRect.h};
+    SDL_Rect destRect = SDL_Rect {(int)associated.box.x, (int)associated.box.y, clipRect.w, clipRect.h};
     SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect);
 }
 

@@ -1,6 +1,6 @@
-#include "face.h"
+#include "Face.h"
 
-#include "sound.h"
+#include "Sound.h"
 
 Face::Face(GameObject& associated) : Component(associated)
 {

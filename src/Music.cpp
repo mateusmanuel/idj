@@ -1,4 +1,4 @@
-#include "music.h"
+#include "Music.h"
 
 Music::Music()
 {
