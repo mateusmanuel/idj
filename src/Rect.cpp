@@ -17,15 +17,20 @@ Vec2& Rect::Center()
 
     return *(new Vec2((minX + maxX)/2.0, (minY + maxY)/2.0));
 }
+
+float Area(int x1, int y1, int x2, int y2, int x3, int y3);
         
 bool Rect::Contains(Vec2 v)
 {
-    float minX = std::min(v.x, (v.x + w));
-    float maxX = std::max(v.x, (v.x + w));
-    float minY = std::min(v.y, (v.y + h));
-    float maxY = std::max(v.y, (v.y + h));
-
-    return (x >= minX) && (x < maxX) && (y >= minY) && (y < maxY);
+    float A = Area(x, y, x+w, y, x, y+h) + 
+              Area(x, y, x+w, y+h, x, y+h);
+ 
+    float A1 = Area(v.x, v.y, x, y, x+w, y);
+    float A2 = Area(v.x, v.y, x+w, y, x, y+h);
+    float A3 = Area(v.x, v.y, x, y+h, x+w, y+h);
+    float A4 = Area(v.x, v.y, x, y, x+w, y+h);
+ 
+    return (A >= A1 + A2 + A3 + A4);
 }
 
 bool Rect::Intersects(Rect r)
@@ -61,4 +66,10 @@ bool Rect::Intersects(Rect r, Rect i)
         i = Rect(0, 0, 0, 0);
         return false;
     }
+}
+
+float Area(int x1, int y1, int x2, int y2, int x3, int y3)
+{
+    return abs((x1 * (y2 - y3) + x2 * (y3 - y1) + 
+                x3 * (y1 - y2)) / 2.0);
 }

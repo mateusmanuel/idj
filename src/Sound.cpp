@@ -31,6 +31,11 @@ void Sound::Open(std::string file)
     }
 }
 
+bool Sound::IsOpen()
+{
+    return chunk != nullptr; 
+}
+
 Sound::~Sound()
 {
     if(chunk != nullptr)

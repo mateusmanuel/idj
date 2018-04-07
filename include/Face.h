@@ -12,6 +12,7 @@ class Face : public Component
 {
     private:
         int hitpoints;
+        int delayDeathTime;
     
     public:
         Face(GameObject& associated);

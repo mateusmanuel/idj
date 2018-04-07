@@ -5,6 +5,7 @@
 Face::Face(GameObject& associated) : Component(associated)
 {
     hitpoints = 30;
+    delayDeathTime = 25;
 }
 
 void Face::Damage(int damage)
@@ -13,8 +14,7 @@ void Face::Damage(int damage)
 
     if(hitpoints <= 0)
     {
-        associated.RequestDelete();
-        Sound* sound = (Sound *)associated.GetComponent("sound");
+        Sound* sound = (Sound *)associated.GetComponent("Sound");
         sound->Play();
     }
 }
@@ -26,4 +26,14 @@ bool Face::Is(std::string type)
 
 void Face::Render() {}
 
-void Face::Update(float dt) {}
+void Face::Update(float dt) 
+{
+    if(hitpoints <= 0)
+    {
+        delayDeathTime--;
+    }
+    if(delayDeathTime == 0)
+    {
+        associated.RequestDelete();
+    }
+}

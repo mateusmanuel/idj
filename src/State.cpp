@@ -102,7 +102,7 @@ void State::Input()
 				// Esse código, assim como a classe Face, é provisório. Futuramente, para
 				// chamar funções de GameObjects, use objectArray[i]->função() direto.
 
-				if(go->box.Contains( {(float)mouseX, (float)mouseY} ) ) {
+				if(go->box.Contains( Vec2((float)mouseX, (float)mouseY))) {
 					Face* face = (Face*)go->GetComponent( "Face" );
 					if ( nullptr != face ) {
 						// Aplica dano
@@ -113,7 +113,7 @@ void State::Input()
 				}
 			}
 		}
-		if( event.type == SDL_KEYDOWN ) {
+		if(event.type == SDL_KEYDOWN) {
 			
 			// Se a tecla for ESC, setar a flag de quit
 			if( event.key.keysym.sym == SDLK_ESCAPE ) {
