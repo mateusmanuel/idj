@@ -1,6 +1,7 @@
 #include "TileSet.h"
 
-TileSet::TileSet(GameObject& associated, int tileWidth, int tileHeight, std::string file)
+TileSet::TileSet(GameObject& associated, int tileWidth, int tileHeight, std::string file) :
+tileWidth(tileWidth), tileHeight(tileHeight)
 {
     tileSet = new Sprite(associated, file);
     
@@ -10,11 +11,15 @@ TileSet::TileSet(GameObject& associated, int tileWidth, int tileHeight, std::str
 
 void TileSet::RenderTile(unsigned index, float x, float y)
 {
-    if(index == (rows*columns)-1)
+    if(index < rows*columns and index >= 0)
     {
-        tileSet->SetClip(x, y, tileWidth, tileHeight);
-        tileSet->Render(x, y);
+        int i = (index%columns)*tileWidth;
+        int j = (index/columns)*tileHeight;
+
+        tileSet->SetClip(i, j, tileWidth, tileHeight);
+        tileSet->Render(x*tileWidth, y*tileHeight);
     }
+    
 }
 
 int TileSet::GetTileWidth()

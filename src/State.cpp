@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Sound.h"
 #include "Face.h"
+#include "TileMap.h"
 
 State::State()
 {
@@ -14,6 +15,13 @@ State::State()
         
     bg = new GameObject();
     bg->AddComponent(new Sprite(*bg, "assets/img/ocean.jpg"));
+
+	GameObject* map = new GameObject();
+	TileSet* tile = new TileSet(*map, 64, 64, "assets/img/tileset.png");
+	TileMap* tileMap = new TileMap(*map, "assets/map/tileMap.txt", tile);
+	map->box.y = map->box.x = 0;
+	map->AddComponent(tileMap);
+	objectArray.emplace_back(map);
 }
 
 State::~State()
@@ -48,7 +56,7 @@ void State::Update(float dt)
 
 void State::Render()
 {
-    bg->Render();
+ 	bg->Render();
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{

@@ -15,10 +15,10 @@ std::istream& operator>>(std::istream& is, WordDelimitedByComma& output)
    return is;
 }
 
-TileMap::TileMap(GameObject& associated, std::string file, TileSet* TileSet) : Component(associated)
+TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet) : Component(associated)
 {
     Load(file);
-    tileSet = tileSet;
+    this->tileSet = tileSet;
 }
 
 void TileMap::Load(std::string file)
@@ -40,7 +40,7 @@ void TileMap::Load(std::string file)
     // Read content
     copy(std::istream_iterator<WordDelimitedByComma>(in), std::istream_iterator<WordDelimitedByComma>(), back_inserter(test));
     std::transform(test.begin(), test.end(), std::back_inserter(tileMatrix), 
-                    [](const std::string& str) { return stoi(str); });
+                    [](const std::string& str) { return stoi(str)-1; });
 }
 
 void TileMap::SetTileSet(TileSet* tileSet)
@@ -50,15 +50,17 @@ void TileMap::SetTileSet(TileSet* tileSet)
 
 int& TileMap::At(int x, int y, int z)
 {
-    return tileMatrix[x*mapHeight + y + z*(mapHeight*mapWidth)];
+    return tileMatrix[y*mapWidth + x + z*(mapHeight*mapWidth)];
 }
 
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 {
     for(int i = 0; i < mapHeight; ++i)
     {
-        printf("%d ", i);
-        tileSet->RenderTile(i, 100, 100);
+        for(int j = 0; j < mapWidth; ++j)
+        {    
+            tileSet->RenderTile(At(i, j, layer), i, j);
+        }
     }
 }
 
