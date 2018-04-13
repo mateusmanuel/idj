@@ -45,7 +45,14 @@ void Sprite::SetClip(int x, int y, int w, int h)
 
 void Sprite::Render()
 {
-    SDL_Rect destRect = SDL_Rect {(int)associated.box.x, (int)associated.box.y, clipRect.w, clipRect.h};
+    //SDL_Rect destRect = SDL_Rect {(int)associated.box.x, (int)associated.box.y, clipRect.w, clipRect.h};
+    //SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect);
+    Render(associated.box.x, associated.box.y);
+}
+
+void Sprite::Render(float x, float y)
+{
+    SDL_Rect destRect = SDL_Rect {(int)x, (int)y, clipRect.w, clipRect.h};
     SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect);
 }
 
