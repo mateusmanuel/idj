@@ -1,6 +1,7 @@
 #include "Face.h"
 
 #include "Sound.h"
+#include "InputManager.h"
 
 Face::Face(GameObject& associated) : Component(associated)
 {
@@ -35,5 +36,13 @@ void Face::Update(float dt)
     if(delayDeathTime == 0)
     {
         associated.RequestDelete();
+    }
+
+    if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)) 
+    {
+    	if(associated.box.Contains( Vec2((float)InputManager::GetInstance().GetMouseX(), (float)InputManager::GetInstance().GetMouseY()))) 
+        {
+			this->Damage(std::rand() % 10 + 10);
+		}
     }
 }

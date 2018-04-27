@@ -5,6 +5,7 @@
 #include "Sound.h"
 #include "Face.h"
 #include "TileMap.h"
+#include "InputManager.h"
 
 State::State()
 {
@@ -38,7 +39,19 @@ void State::LoadAssets()
 
 void State::Update(float dt)
 {
-    Input();
+	if(InputManager::GetInstance().KeyPress(SDLK_ESCAPE) || InputManager::GetInstance().QuitRequested())
+	{
+		quitRequested = true;
+	}
+
+	if(InputManager::GetInstance().KeyPress(SDLK_SPACE))
+	{
+		printf("Generating enemie\n");
+		Vec2* objPos = new Vec2(200, 0);
+        objPos->Rotate(-M_PI + M_PI*(rand() % 1001)/500.0);
+        *objPos += *(new Vec2(InputManager::GetInstance().GetMouseX(), InputManager::GetInstance().GetMouseX()));
+		AddObject((int)objPos->x, (int)objPos->y);
+	}
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{

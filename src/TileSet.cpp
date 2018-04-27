@@ -11,7 +11,7 @@ tileWidth(tileWidth), tileHeight(tileHeight)
 
 void TileSet::RenderTile(unsigned index, float x, float y)
 {
-    if(index < rows*columns and index >= 0)
+    if((int)index < rows*columns and (int)index >= 0)
     {
         int i = (index%columns)*tileWidth;
         int j = (index/columns)*tileHeight;
