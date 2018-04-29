@@ -44,7 +44,6 @@ void InputManager::Update()
             case SDL_KEYDOWN:
                 if(event.key.repeat)
                     continue;
-                printf("%d\n", event.key.keysym.sym);
                 keyState[event.key.keysym.sym] = true;
                 keyUpdate[event.key.keysym.sym] = updateCounter;
                 break;

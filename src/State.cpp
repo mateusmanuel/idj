@@ -46,7 +46,6 @@ void State::Update(float dt)
 
 	if(InputManager::GetInstance().KeyPress(SDLK_SPACE))
 	{
-		printf("Generating enemie\n");
 		Vec2* objPos = new Vec2(200, 0);
         objPos->Rotate(-M_PI + M_PI*(rand() % 1001)/500.0);
         *objPos += *(new Vec2(InputManager::GetInstance().GetMouseX(), InputManager::GetInstance().GetMouseX()));

@@ -58,6 +58,8 @@ void Game::Init(string title, int width, int height)
     }
 
     state = new State();
+    dt = 0.f;
+    frameStart = SDL_GetTicks();
 }
 
 Game::~Game()
@@ -86,9 +88,10 @@ void Game::Run()
 {
     while(not state->QuitRequested())
     {
+        CalculateDeltaTime();
         state->Render();
         InputManager::GetInstance().Update();
-        state->Update(0.0);
+        state->Update(dt);
 
         SDL_RenderPresent(renderer);
 
@@ -100,4 +103,15 @@ void Game::Run()
     Resources::ClearSounds();
 }
 
+void Game::CalculateDeltaTime()
+{
+    int elapsedTime = SDL_GetTicks();
+    dt = (elapsedTime - frameStart)/100.f;
+    frameStart = elapsedTime;
+}
+
+float Game::GetDeltaTime()
+{
+    return dt;
+}
 
