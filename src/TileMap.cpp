@@ -59,7 +59,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
     {
         for(int j = 0; j < mapWidth; ++j)
         {    
-            tileSet->RenderTile(At(i, j, layer), i, j);
+            tileSet->RenderTile(At(i, j, layer), cameraX+i, cameraY+j);
         }
     }
 }

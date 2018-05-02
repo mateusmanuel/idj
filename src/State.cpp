@@ -6,6 +6,7 @@
 #include "Face.h"
 #include "TileMap.h"
 #include "InputManager.h"
+#include "Camera.h"
 
 State::State()
 {
@@ -23,6 +24,8 @@ State::State()
 	map->box.y = map->box.x = 0;
 	map->AddComponent(tileMap);
 	objectArray.emplace_back(map);
+
+	Camera::pos.x = Camera::pos.y = 0;
 }
 
 State::~State()
@@ -39,6 +42,8 @@ void State::LoadAssets()
 
 void State::Update(float dt)
 {
+	Camera::Update(dt);
+
 	if(InputManager::GetInstance().KeyPress(SDLK_ESCAPE) || InputManager::GetInstance().QuitRequested())
 	{
 		quitRequested = true;
@@ -54,7 +59,7 @@ void State::Update(float dt)
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{
-		objectArray[i]->Update(0.0);
+		objectArray[i]->Update(dt);
 	}
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
@@ -72,6 +77,11 @@ void State::Render()
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{
+		if(objectArray[i]->GetComponent("TileMap") != nullptr)
+		{
+			objectArray[i]->box.x = Camera::pos.x;
+			objectArray[i]->box.y = Camera::pos.y;
+		}
 		objectArray[i]->Render();
 	}
 }
@@ -83,14 +93,14 @@ bool State::QuitRequested()
 
 void State::AddObject(int mouseX, int mouseY)
 {
-	GameObject* enemie = new GameObject();
-	Sprite* enemieSprite = new Sprite(*enemie, "assets/img/penguinface.png");
-	enemie->AddComponent(enemieSprite);
-	enemie->box = Rect(mouseX, mouseY, enemieSprite->GetWidth(), enemieSprite->GetHeight());
-	enemie->AddComponent(new Sound(*enemie, "assets/audio/boom.wav"));
-	enemie->AddComponent(new Face(*enemie));
+	GameObject* enemy = new GameObject();
+	Sprite* enemySprite = new Sprite(*enemy, "assets/img/penguinface.png");
+	enemy->AddComponent(enemySprite);
+	enemy->AddComponent(new Sound(*enemy, "assets/audio/boom.wav"));
+	enemy->AddComponent(new Face(*enemy));
+	enemy->box = Rect(mouseX, mouseY, enemySprite->GetWidth(), enemySprite->GetHeight());
     
-	objectArray.emplace_back(enemie);
+	objectArray.emplace_back(enemy);
 }
 
 // Stuck soon
