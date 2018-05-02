@@ -40,7 +40,7 @@ void TileMap::Load(std::string file)
     // Read content
     copy(std::istream_iterator<WordDelimitedByComma>(in), std::istream_iterator<WordDelimitedByComma>(), back_inserter(test));
     std::transform(test.begin(), test.end(), std::back_inserter(tileMatrix), 
-                    [](const std::string& str) { return stoi(str)-1; });
+                    [](const std::string& str) { if(isdigit(str[str.length()-1])) return stoi(str)-1; else return -1; });
 }
 
 void TileMap::SetTileSet(TileSet* tileSet)
