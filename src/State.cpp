@@ -8,6 +8,7 @@
 #include "InputManager.h"
 #include "Camera.h"
 #include "CameraFollower.h"
+#include "Alien.h"
 
 State::State()
 {
@@ -27,6 +28,13 @@ State::State()
 	map->box.y = map->box.x = 0;
 	map->AddComponent(tileMap);
 	objectArray.emplace_back(map);
+
+	GameObject* alienGO = new GameObject();
+	Alien* alien = new Alien(*alienGO, 0);
+	alienGO->box.x = 512;
+	alienGO->box.y = 300;
+	alienGO->AddComponent(alien);
+	objectArray.emplace_back(alienGO);
 
 	Camera::pos.x = Camera::pos.y = 0;
 }
