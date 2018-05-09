@@ -25,6 +25,7 @@ class TileMap : public Component
         int GetHeight();
         int GetDepth();
 
+        void Start();
         void Update(float dt);
         bool Is(string type);
 };

@@ -69,3 +69,8 @@ bool Sprite::IsOpen()
 {
     return texture != nullptr;
 }
+
+void Sprite::Start() 
+{
+    
+}

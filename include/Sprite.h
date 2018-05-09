@@ -29,6 +29,7 @@ class Sprite : public Component
         int GetHeight();
         bool IsOpen();
 
+        void Start();
         void Update(float dt);
         void Render();
         void Render(float x, float y);

@@ -19,6 +19,7 @@ class Face : public Component
 
         void Damage(int damage);
 
+        void Start();
         void Update(float dt);
         void Render();
         bool Is(string type);

@@ -66,3 +66,7 @@ void Face::Update(float dt)
 		}
     }
 }
+
+void Face::Start()
+{
+}

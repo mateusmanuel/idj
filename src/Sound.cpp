@@ -44,3 +44,5 @@ bool Sound::Is(std::string type)
 void Sound::Render() {}
 
 void Sound::Update(float dt) {}
+
+void Sound::Start() {}

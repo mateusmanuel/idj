@@ -26,6 +26,7 @@ class Sound: public Component
         void Open(string file);
         bool IsOpen();
 
+        void Start();
         void Update(float dt);
         void Render();
         bool Is(string type);

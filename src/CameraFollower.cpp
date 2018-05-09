@@ -21,3 +21,6 @@ void CameraFollower::Render()
 {
 }
 
+void CameraFollower::Start() 
+{
+}

@@ -12,6 +12,7 @@
 State::State()
 {
     quitRequested = false;
+	started = false;
 
     music = new Music("assets/audio/stageState.ogg");
     music->Play(-1);
@@ -40,6 +41,45 @@ State::~State()
 void State::LoadAssets()
 {
 
+}
+
+void State::Start()
+{
+	LoadAssets();
+
+	for(int i = 0; i < (int) objectArray.size(); ++i)
+	{
+		objectArray[i]->Start();
+	}
+
+	started = true;	
+}
+
+std::weak_ptr<GameObject> State::AddObject(GameObject* go)
+{
+	std::shared_ptr<GameObject> goPtr(go);
+
+	objectArray.push_back(goPtr);
+	
+	if(started)
+	{
+		go->Start();
+	}
+
+	return std::weak_ptr<GameObject> (goPtr);
+}
+
+std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go)
+{
+	for(int i = 0; i < (int) objectArray.size(); ++i)
+	{
+		std::shared_ptr<GameObject> goPtr(go);
+		if(objectArray[i] == std::shared_ptr<GameObject> (go))
+		{
+			return std::weak_ptr<GameObject> (goPtr);
+		}
+	}
+	return std::weak_ptr<GameObject> ();
 }
 
 void State::Update(float dt)

@@ -5,6 +5,7 @@
 GameObject::GameObject()
 {
     isDead = false;
+    started = false;
 }
 
 GameObject::~GameObject()
@@ -14,6 +15,15 @@ GameObject::~GameObject()
         delete(it);
     }
     components.clear();
+}
+
+void GameObject::Start()
+{
+    for(auto it: components)
+    {
+        it->Start();
+    }
+    started = true;
 }
 
 void GameObject::Update(float dt)

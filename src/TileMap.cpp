@@ -97,3 +97,8 @@ bool TileMap::Is(std::string type)
     return type == "TileMap";
 }
 
+void TileMap::Start() 
+{
+
+}
+
