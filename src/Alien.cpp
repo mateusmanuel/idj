@@ -3,13 +3,20 @@
 #include "Sprite.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "Game.h"
+#include "Minion.h"
 
 #define EPS 1
+#define SPEED 5
 
 Alien::Alien(GameObject& associated, int nMinions) : Component(associated)
 {
-    associated.AddComponent(new Sprite(associated, "assets/img/alien.png"));
+    Sprite* alienSprite = new Sprite(associated, "assets/img/alien.png");
+    associated.AddComponent(alienSprite);
     
+    associated.box.h = alienSprite->GetHeight();
+    associated.box.w = alienSprite->GetHeight();
+
     minionArray.resize(nMinions);
 
     speed = Vec2();
@@ -18,7 +25,17 @@ Alien::Alien(GameObject& associated, int nMinions) : Component(associated)
 
 void Alien::Start()
 {
+    
+    State &state = Game::GetInstance().GetState();
 
+    std::weak_ptr<GameObject> alienWeakPtr(state.GetObjectPtr(&associated));
+    for(int i = 0; i < minionArray.size(); ++i)
+    {
+        GameObject* minionGO = new GameObject();
+        Minion* minion = new Minion(*minionGO, alienWeakPtr, minionArray.size());
+        minionGO->AddComponent(minion);
+        minionArray[i] = state.AddObject(minionGO);
+    }
 }
 
 Alien::~Alien()
@@ -51,16 +68,16 @@ void Alien::Update(float dt)
 
             if(arrived)
             {
-                associated.box.x = taskQueue.front().pos.x;
-                associated.box.y = taskQueue.front().pos.y;                
+                associated.box.x = taskQueue.front().pos.x - associated.box.h/2;
+                associated.box.y = taskQueue.front().pos.y - associated.box.w/2;
                 taskQueue.pop();
             }
             else
             {
                 double angle = atan2(taskQueue.front().pos.y - associated.box.Center().y, taskQueue.front().pos.x - associated.box.Center().x);
 
-                speed.x = cos(angle) * 5;
-                speed.y = sin(angle) * 5;
+                speed.x = cos(angle) * SPEED;
+                speed.y = sin(angle) * SPEED;
 
                 associated.box.x += (speed.x * dt);
                 associated.box.y += (speed.y * dt);

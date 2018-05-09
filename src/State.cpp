@@ -30,7 +30,7 @@ State::State()
 	objectArray.emplace_back(map);
 
 	GameObject* alienGO = new GameObject();
-	Alien* alien = new Alien(*alienGO, 0);
+	Alien* alien = new Alien(*alienGO, 3);
 	alienGO->box.x = 512;
 	alienGO->box.y = 300;
 	alienGO->AddComponent(alien);
@@ -81,10 +81,9 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go)
 {
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{
-		std::shared_ptr<GameObject> goPtr(go);
-		if(objectArray[i] == std::shared_ptr<GameObject> (go))
+		if(objectArray[i].get() == go)
 		{
-			return std::weak_ptr<GameObject> (goPtr);
+			return std::weak_ptr<GameObject> (std::shared_ptr<GameObject> (objectArray[i]));
 		}
 	}
 	return std::weak_ptr<GameObject> ();
