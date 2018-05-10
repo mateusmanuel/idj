@@ -1,8 +1,12 @@
 #include "Minion.h"
 
 #include "Sprite.h"
+#include "Bullet.h"
+#include "Game.h"
 
 #define SPEED M_PI/4
+#define BULLET_DISTANCE 100.f
+#define BULLET_DAMAGE 5
 
 Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) : Component(associated), alienCenter(alienCenter)
 {
@@ -50,4 +54,17 @@ void Minion::Render()
 bool Minion::Is(std::string type)
 {
     return type == "Minion";
+}
+
+void Minion::Shoot(Vec2 target)
+{
+    GameObject* bulletGO = new GameObject();
+    bulletGO->box.x = associated.box.Center().x;
+    bulletGO->box.y = associated.box.Center().y;
+
+    Bullet *bullet = new Bullet(*bulletGO, atan((target.y - associated.box.Center().y)/(target.x - associated.box.Center().x)), BULLET_DAMAGE, BULLET_DISTANCE, target.Distance(associated.box.Center()), "assets/img/minionbullet1.png");
+    bulletGO->AddComponent(bullet);
+
+    State &state = Game::GetInstance().GetState();
+    state.AddObject(bulletGO); 
 }
