@@ -24,15 +24,14 @@ Alien::Alien(GameObject& associated, int nMinions) : Component(associated)
 }
 
 void Alien::Start()
-{
-    
+{  
     State &state = Game::GetInstance().GetState();
 
     std::weak_ptr<GameObject> alienWeakPtr(state.GetObjectPtr(&associated));
     for(int i = 0; i < minionArray.size(); ++i)
     {
         GameObject* minionGO = new GameObject();
-        Minion* minion = new Minion(*minionGO, alienWeakPtr, minionArray.size());
+        Minion* minion = new Minion(*minionGO, alienWeakPtr, i * 360.0/minionArray.size());
         minionGO->AddComponent(minion);
         minionArray[i] = state.AddObject(minionGO);
     }
@@ -85,7 +84,7 @@ void Alien::Update(float dt)
         }
         else if(taskQueue.front().type == Action::ActionType::SHOOT)
         {
-            Minion* minion = (Minion*) minionArray[0].lock()->GetComponent("Minion");
+            Minion* minion = GetClosestMinion(taskQueue.front().pos);
             minion->Shoot(taskQueue.front().pos);
             
             taskQueue.pop();
@@ -100,10 +99,30 @@ void Alien::Update(float dt)
 
 void Alien::Render()
 {
-
+    associated.angleDeg -= 0.25;
 }
 
 bool Alien::Is(std::string type)
 {
     return type == "Alien";
+}
+
+Minion* Alien::GetClosestMinion(Vec2 pos)
+{
+
+    double minDist = 1e6;
+    GameObject* minionGOClose;
+
+    for(int i = 0; i < minionArray.size(); i++){
+        GameObject* minionGo = minionArray[i].lock().get();
+        
+        double dist = minionGo->box.Center().Distance(pos);
+        
+        if(dist < minDist){
+            minionGOClose = minionGo;
+            minDist = dist;
+        }
+    }
+
+    return (Minion*)minionGOClose->GetComponent("Minion");
 }

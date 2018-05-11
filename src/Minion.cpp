@@ -5,12 +5,14 @@
 #include "Game.h"
 
 #define SPEED M_PI/4
-#define BULLET_DISTANCE 100.f
+#define BULLET_SPEED 50
 #define BULLET_DAMAGE 5
 
 Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) : Component(associated), alienCenter(alienCenter)
 {
     Sprite* minionSprite = new Sprite(associated, "assets/img/minion.png");
+    double randomScale = 1.0 + rand() / (RAND_MAX/(0.5));
+    minionSprite->SetScaleX(randomScale, randomScale);
     associated.AddComponent(minionSprite);
 
     std::shared_ptr<GameObject> alienGO(this->alienCenter.lock());
@@ -42,8 +44,10 @@ void Minion::Update(float dt)
     sourcePos.Rotate(arc);
 
     sourcePos += alienGO.get()->box.Center();
-    associated.box.x = sourcePos.x; 
-    associated.box.y = sourcePos.y;
+    associated.box.x = sourcePos.x - associated.box.w/2; 
+    associated.box.y = sourcePos.y - associated.box.h/2;
+
+    associated.angleDeg += SPEED;
 }
 
 void Minion::Render()
@@ -62,7 +66,7 @@ void Minion::Shoot(Vec2 target)
     bulletGO->box.x = associated.box.Center().x;
     bulletGO->box.y = associated.box.Center().y;
 
-    Bullet *bullet = new Bullet(*bulletGO, atan((target.y - associated.box.Center().y)/(target.x - associated.box.Center().x)), BULLET_DAMAGE, BULLET_DISTANCE, target.Distance(associated.box.Center()), "assets/img/minionbullet1.png");
+    Bullet* bullet = new Bullet(*bulletGO, atan2(associated.box.y - target.y, associated.box.x- target.x) * (180.0/M_PI), BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet1.png");
     bulletGO->AddComponent(bullet);
 
     State &state = Game::GetInstance().GetState();

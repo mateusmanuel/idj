@@ -9,9 +9,10 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
 
     associated.box.h = spriteComponent->GetHeight();
     associated.box.w = spriteComponent->GetWidth();
+    associated.angleDeg = angle;
 
     this->speed.x = speed * cos(angle);
-    this->speed.x = speed * sin(angle);
+    this->speed.y = speed * sin(angle);
 }
 
 void Bullet::Update(float dt)
@@ -20,20 +21,12 @@ void Bullet::Update(float dt)
 
     if(distanceLeft <= 0.f)
     {
-        double angle = atan2(associated.box.Center().y, associated.box.Center().x);
-
-        speed.x = cos(angle) * distanceLeft;
-        speed.y = sin(angle) * distanceLeft;
-
-        associated.box.x += speed.x;
-        associated.box.y += speed.y;
-
         associated.RequestDelete();
     }
     else
     {
-        associated.box.x += speed.x;
-        associated.box.y += speed.y;
+        associated.box.x += (speed.x * dt);
+        associated.box.y += (speed.y * dt);
     }
 }
 

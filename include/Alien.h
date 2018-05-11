@@ -7,6 +7,7 @@
 
 #include "Component.h"
 #include "Vec2.h"
+#include "Minion.h"
 
 class Alien : public Component
 {
@@ -36,6 +37,8 @@ class Alien : public Component
         void Update(float dt);
         void Render();
         bool Is(std::string type);
+
+        Minion* GetClosestMinion(Vec2 pos);
 };
 
 
