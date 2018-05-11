@@ -31,6 +31,7 @@ class GameObject
         Component* GetComponent(string type);
 
         Rect box;
+        double angleDeg;
 };
 
 #endif
