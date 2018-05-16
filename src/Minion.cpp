@@ -5,7 +5,7 @@
 #include "Game.h"
 
 #define SPEED M_PI/4
-#define BULLET_SPEED 50
+#define BULLET_SPEED 20
 #define BULLET_DAMAGE 5
 
 Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) : Component(associated), alienCenter(alienCenter)
@@ -66,7 +66,7 @@ void Minion::Shoot(Vec2 target)
     bulletGO->box.x = associated.box.Center().x;
     bulletGO->box.y = associated.box.Center().y;
 
-    Bullet* bullet = new Bullet(*bulletGO, atan2(associated.box.y - target.y, associated.box.x- target.x) * (180.0/M_PI), BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet1.png");
+    Bullet* bullet = new Bullet(*bulletGO, atan2(associated.box.y - target.y, associated.box.x- target.x) * (180.0/M_PI), BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet2.png", 3, 1.f);
     bulletGO->AddComponent(bullet);
 
     State &state = Game::GetInstance().GetState();

@@ -2,9 +2,9 @@
 
 #include "Sprite.h"
 
-Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite) : Component(associated), damage(damage), distanceLeft(maxDistance)
+Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite, int frameCount, float frameTime) : Component(associated), damage(damage), distanceLeft(maxDistance)
 {
-    Sprite* spriteComponent = new Sprite(associated, sprite);
+    Sprite* spriteComponent = new Sprite(associated, sprite, frameCount, frameTime);
     associated.AddComponent(spriteComponent);
 
     associated.box.h = spriteComponent->GetHeight();

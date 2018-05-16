@@ -8,8 +8,6 @@
 #include "Component.h"
 #include "GameObject.h"
 
-using std::string;
-
 class Sprite : public Component
 {
     private:
@@ -19,9 +17,14 @@ class Sprite : public Component
         SDL_Rect clipRect;
         Vec2 scale;
 
+        int frameCount;
+        int currentFrame;
+        float timeElapsed;
+        float frameTime;
+
     public:
         Sprite(GameObject& associated);
-        Sprite(GameObject& associated, string file);
+        Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1.f);
         ~Sprite();
 
         void Open(string file);
@@ -38,6 +41,10 @@ class Sprite : public Component
         void Render();
         void Render(float x, float y);
         bool Is(string type);
+
+        void SetFrame(int frame);
+        void SetFrameCount(int frameCount);
+        void SetFrameTime(float frameTime);
 };
 
 #endif

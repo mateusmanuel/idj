@@ -8,9 +8,15 @@ Sprite::Sprite(GameObject& associated) : Component(associated)
     scale = Vec2(1.f, 1.f);
 }
 
-Sprite::Sprite(GameObject& associated, string file) : Sprite(associated)
+Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime) : Sprite(associated)
 {
     Open(file);
+
+    SetFrameCount(frameCount);
+    SetFrameTime(frameTime);
+    
+    timeElapsed = 0.f;
+    currentFrame = 0;
 }
 
 Sprite::~Sprite()
@@ -56,12 +62,22 @@ bool Sprite::Is(std::string type)
 
 void Sprite::Update(float dt) 
 {
+    timeElapsed += dt;
 
+    if(timeElapsed > frameTime)
+    {
+        SetFrame(currentFrame + 1);
+    }
+
+    if(frameCount == currentFrame)
+    {
+        SetFrame(0);
+    }
 }
 
 int Sprite::GetWidth()
 {
-    return width * (int)scale.y;
+    return (width * (int)scale.x) / frameCount;
 }
 
 int Sprite::GetHeight()
@@ -93,4 +109,23 @@ void Sprite::SetScaleX(float scaleX, float scaleY)
 
     associated.box.h = GetHeight();
     associated.box.w = GetWidth();
+}
+
+void Sprite::SetFrame(int frame)
+{
+    SetClip(frame * GetWidth(), 0, GetWidth(), GetHeight());
+    currentFrame = frame;
+}
+
+void Sprite::SetFrameCount(int frameCount)
+{
+    this->frameCount = frameCount;
+
+    SetFrame(0);
+    associated.box.w = GetWidth();
+}
+
+void Sprite::SetFrameTime(float frameTime)
+{
+    this->frameTime = frameTime;
 }
