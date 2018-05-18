@@ -5,6 +5,7 @@
 #include "Game.h"
 
 #define SPEED M_PI/4
+#define DISTANCE 200
 #define BULLET_SPEED 20
 #define BULLET_DAMAGE 5
 
@@ -38,16 +39,16 @@ void Minion::Update(float dt)
         return;
     }
 
-    arc += SPEED;
+    arc += SPEED * dt;
 
-    Vec2 sourcePos = Vec2(200, 0);
+    Vec2 sourcePos = Vec2(DISTANCE, 0);
     sourcePos.Rotate(arc);
 
     sourcePos += alienGO.get()->box.Center();
     associated.box.x = sourcePos.x - associated.box.w/2; 
     associated.box.y = sourcePos.y - associated.box.h/2;
 
-    associated.angleDeg += SPEED;
+    associated.angleDeg = arc;
 }
 
 void Minion::Render()
@@ -66,7 +67,7 @@ void Minion::Shoot(Vec2 target)
     bulletGO->box.x = associated.box.Center().x;
     bulletGO->box.y = associated.box.Center().y;
 
-    Bullet* bullet = new Bullet(*bulletGO, atan2(associated.box.y - target.y, associated.box.x- target.x) * (180.0/M_PI), BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet2.png", 3, 1.f);
+    Bullet* bullet = new Bullet(*bulletGO, atan2(target.y - associated.box.y, target.x - associated.box.x), BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet2.png", 3, 1.f);
     bulletGO->AddComponent(bullet);
 
     State &state = Game::GetInstance().GetState();

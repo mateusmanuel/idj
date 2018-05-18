@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "Resources.h"
+#include "Camera.h"
 
 Sprite::Sprite(GameObject& associated) : Component(associated)
 {
@@ -46,11 +47,12 @@ void Sprite::Render()
 {
     //SDL_Rect destRect = SDL_Rect {(int)associated.box.x, (int)associated.box.y, clipRect.w, clipRect.h};
     //SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect);
-    Render(associated.box.x, associated.box.y);
+    Render(associated.box.x - Camera::pos.x, associated.box.y - Camera::pos.y);
 }
 
 void Sprite::Render(float x, float y)
 {
+    //printf("Angle: %lf\n", associated.angleDeg);
     SDL_Rect destRect = SDL_Rect {(int)x, (int)y, clipRect.w * scale.x, clipRect.h * scale.y};
     SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
 }
@@ -97,12 +99,12 @@ void Sprite::Start()
 
 void Sprite::SetScaleX(float scaleX, float scaleY)
 {
-    if(scaleX != 0.f)
+    if(scaleX > 0.f)
     {
         scale.x = scaleX;
     }
 
-    if(scaleY != 0.f)
+    if(scaleY > 0.f)
     {
         scale.y = scaleY;
     }

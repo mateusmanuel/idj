@@ -5,6 +5,10 @@
 #include <iterator>
 #include <algorithm>
 
+#include "Camera.h"
+
+#define PARALLAX_FACTOR 0.7
+
 // Help class to delimited by comma
 class WordDelimitedByComma : public std::string
 {};
@@ -45,7 +49,7 @@ void TileMap::Load(std::string file)
 
 void TileMap::SetTileSet(TileSet* tileSet)
 {
-    tileSet = tileSet;
+    this->tileSet = tileSet;
 }
 
 int& TileMap::At(int x, int y, int z)
@@ -59,7 +63,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
     {
         for(int j = 0; j < mapWidth; ++j)
         {    
-            tileSet->RenderTile(At(i, j, layer), cameraX+i, cameraY+j);
+            tileSet->RenderTile(At(i, j, layer), (tileSet->GetTileWidth() * i) - cameraX, (tileSet->GetTileHeight() * j) - cameraY);
         }
     }
 }
@@ -68,7 +72,7 @@ void TileMap::Render()
 {
     for(int i = 0; i < mapDepth; ++i)
     {
-        RenderLayer(i, associated.box.x, associated.box.y);    
+        RenderLayer(i, Camera::pos.x, Camera::pos.y);    
     }
 }
 

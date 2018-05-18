@@ -23,6 +23,9 @@ class Game
     float dt;
     void CalculateDeltaTime();
 
+    int width;
+		int height;
+
   public:
     ~Game();
 
@@ -33,6 +36,8 @@ class Game
     State& GetState();
     float GetDeltaTime();
 
+    int GetHeight();
+    int GetWidth();
 };
 
 #endif

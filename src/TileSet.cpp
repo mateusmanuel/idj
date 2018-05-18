@@ -11,13 +11,13 @@ tileWidth(tileWidth), tileHeight(tileHeight)
 
 void TileSet::RenderTile(unsigned index, float x, float y)
 {
-    if((int)index < rows*columns and (int)index >= 0)
+    if((int)index < (rows*columns)-1 and (int)index >= 0)
     {
         int i = (index%columns)*tileWidth;
         int j = (index/columns)*tileHeight;
 
         tileSet->SetClip(i, j, tileWidth, tileHeight);
-        tileSet->Render(x*tileWidth, y*tileHeight);
+        tileSet->Render(x, y);
     }
     
 }

@@ -16,7 +16,9 @@ Game& Game::GetInstance()
 
 void Game::Init(string title, int width, int height)
 {
-    
+    this->height = height;
+    this->width = width;
+
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0)
     {
         printf("[ERROR] SDL_Init: %s\n", SDL_GetError());
@@ -116,3 +118,12 @@ float Game::GetDeltaTime()
     return dt;
 }
 
+int Game::GetHeight()
+{
+    return height;
+}
+
+int Game::GetWidth()
+{
+    return width;
+}

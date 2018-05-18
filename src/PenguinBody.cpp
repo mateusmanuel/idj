@@ -7,6 +7,7 @@
 #include "InputManager.h"
 
 #define MAX_LINEAR_SPEED 50.f
+#define ANGULAR_VELOCITY M_PI/16
 
 PenguinBody* PenguinBody::player;
 
@@ -19,6 +20,7 @@ PenguinBody::PenguinBody(GameObject& associated) : Component(associated)
     associated.box.w = sprite->GetWidth();
 
     player = this;
+    hp = 100;
 }
 
 PenguinBody::~PenguinBody()
@@ -33,6 +35,7 @@ void PenguinBody::Start()
     GameObject* penguinCannonGO = new GameObject();
     penguinCannonGO->AddComponent(new PenguinCannon(*penguinCannonGO, state.GetObjectPtr(&associated)));
 
+
     pcannon = state.AddObject(penguinCannonGO); 
 }
 
@@ -42,7 +45,7 @@ void PenguinBody::Update(float dt)
     {
         if(linearSpeed < MAX_LINEAR_SPEED)
         {
-            linearSpeed += dt;
+            linearSpeed += dt * ANGULAR_VELOCITY;
         }
     }
 
@@ -50,7 +53,7 @@ void PenguinBody::Update(float dt)
     {
         if(linearSpeed > -MAX_LINEAR_SPEED)
         {
-            linearSpeed -= dt;
+            linearSpeed -= dt * ANGULAR_VELOCITY; 
         }
     }
 
@@ -64,7 +67,7 @@ void PenguinBody::Update(float dt)
         angle += dt;
     }
 
-    associated.angleDeg = angle;
+    associated.angleDeg = angle * (180 / M_PI);
 
     speed.x = linearSpeed * cos(angle);
     speed.y = linearSpeed * sin(angle);

@@ -19,7 +19,7 @@ Alien::Alien(GameObject& associated, int nMinions) : Component(associated)
 
     minionArray.resize(nMinions);
 
-    speed = Vec2();
+    speed = Vec2(100, 100);
     hp = 30;
 }
 

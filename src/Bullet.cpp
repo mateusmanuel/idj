@@ -9,7 +9,7 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
 
     associated.box.h = spriteComponent->GetHeight();
     associated.box.w = spriteComponent->GetWidth();
-    associated.angleDeg = angle;
+    associated.angleDeg = angle * (180/M_PI);
 
     this->speed.x = speed * cos(angle);
     this->speed.y = speed * sin(angle);
@@ -17,7 +17,7 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
 
 void Bullet::Update(float dt)
 {
-    distanceLeft -= speed.Distance(Vec2(speed*dt));
+    distanceLeft -= Vec2(speed*dt).Length();
 
     if(distanceLeft <= 0.f)
     {

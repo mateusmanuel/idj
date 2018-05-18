@@ -31,8 +31,8 @@ void PenguinCannon::Update(float dt)
         return;
     }
 
-    associated.box.x = pbody.lock()->box.Center().x;
-    associated.box.y = pbody.lock()->box.Center().y;
+    associated.box.x = pbody.lock()->box.Center().x - associated.box.w/2;
+    associated.box.y = pbody.lock()->box.Center().y - associated.box.h/2;
         
     associated.angleDeg = (180 / M_PI) * atan2((InputManager::GetInstance().GetMouseY() - Camera::pos.y - associated.box.Center().y), (InputManager::GetInstance().GetMouseX() - Camera::pos.x - associated.box.Center().x));
 
@@ -60,7 +60,7 @@ void PenguinCannon::Shoot()
     bulletGO->box.x = associated.box.Center().x;
     bulletGO->box.y = associated.box.Center().y;
 
-    Bullet* bullet = new Bullet(*bulletGO, associated.angleDeg, BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet2.png", 3, 1.f);
+    Bullet* bullet = new Bullet(*bulletGO, atan2(target.y - associated.box.y, target.x - associated.box.x), BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet2.png", 3, 1.f);
     bulletGO->AddComponent(bullet);
 
     State &state = Game::GetInstance().GetState();

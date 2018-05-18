@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "CameraFollower.h"
 #include "Alien.h"
+#include "PenguinBody.h"
 
 State::State()
 {
@@ -22,12 +23,11 @@ State::State()
     bg->AddComponent(new Sprite(*bg, "assets/img/ocean.jpg"));
 	bg->AddComponent(new CameraFollower(*bg));
 
-	GameObject* map = new GameObject();
+	map = new GameObject();
 	TileSet* tile = new TileSet(*map, 64, 64, "assets/img/tileset.png");
 	TileMap* tileMap = new TileMap(*map, "assets/map/tileMap.txt", tile);
 	map->box.y = map->box.x = 0;
 	map->AddComponent(tileMap);
-	objectArray.emplace_back(map);
 
 	GameObject* alienGO = new GameObject();
 	Alien* alien = new Alien(*alienGO, 6);
@@ -36,12 +36,23 @@ State::State()
 	alienGO->AddComponent(alien);
 	objectArray.emplace_back(alienGO);
 
-	Camera::pos.x = Camera::pos.y = 0;
+	GameObject* penguins = new GameObject();
+    PenguinBody* penguinBody = new PenguinBody(*penguins);
+	penguinBody->player = penguinBody;
+	penguins->box.x = 704;
+	penguins->box.y = 640;
+	
+	penguins->AddComponent(penguinBody);
+	objectArray.emplace_back(penguins);
+
+	//Camera::pos.x = Camera::pos.y = 0;
+	Camera::Follow(penguins);
 }
 
 State::~State()
 {
     delete bg;
+	delete map;
     delete music;
     objectArray.clear();
 }
@@ -54,6 +65,9 @@ void State::LoadAssets()
 void State::Start()
 {
 	LoadAssets();
+
+	bg->Start();
+	map->Start();
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{
@@ -93,6 +107,9 @@ void State::Update(float dt)
 {
 	Camera::Update(dt);
 
+	bg->Update(dt);
+	map->Update(dt);
+
 	if(InputManager::GetInstance().KeyPress(SDLK_ESCAPE) || InputManager::GetInstance().QuitRequested())
 	{
 		quitRequested = true;
@@ -123,6 +140,7 @@ void State::Update(float dt)
 void State::Render()
 {
  	bg->Render();
+	map->Render();
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{
