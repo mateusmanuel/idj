@@ -10,6 +10,8 @@
 #include "CameraFollower.h"
 #include "Alien.h"
 #include "PenguinBody.h"
+#include "Collider.h"
+#include "Collision.h"
 
 State::State()
 {
@@ -127,6 +129,27 @@ void State::Update(float dt)
 	{
 		objectArray[i]->Update(dt);
 	}
+
+	for(int i = 0; i < (int) objectArray.size(); ++i) 
+	{
+		Collider* a = (Collider*)objectArray[i]->GetComponent("Collider");
+		if (a != nullptr) 
+		{
+			for(int j = i+1; j < (int) objectArray.size(); ++j) 
+			{
+				Collider* b = (Collider*)objectArray[j]->GetComponent("Collider");
+				if (b != nullptr) 
+				{
+					if (Collision::IsColliding(a->box, b->box, objectArray[i]->angleDeg * (M_PI / 180), objectArray[j]->angleDeg * M_PI / 180)) 
+					{
+						objectArray[i]->NotifyCollision(*objectArray[j].get());
+						objectArray[j]->NotifyCollision(*objectArray[i].get());
+					}
+				}
+			}
+		}
+	}
+
 
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{

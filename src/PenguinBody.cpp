@@ -5,6 +5,7 @@
 #include "State.h"
 #include "Game.h"
 #include "InputManager.h"
+#include "Collider.h"
 
 #define MAX_LINEAR_SPEED 50.f
 #define ANGULAR_VELOCITY M_PI/16
@@ -13,6 +14,8 @@ PenguinBody* PenguinBody::player;
 
 PenguinBody::PenguinBody(GameObject& associated) : Component(associated)
 {
+    associated.AddComponent(new Collider(associated));
+    
     Sprite* sprite = new Sprite(associated, "assets/img/penguin.png");
     associated.AddComponent(sprite);
 

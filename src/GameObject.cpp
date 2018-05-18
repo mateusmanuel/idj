@@ -72,3 +72,8 @@ Component* GameObject::GetComponent(std::string type)
 
     return *it;    
 }
+
+void GameObject::NotifyCollision(GameObject& other)
+{
+    
+}

@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "Bullet.h"
 #include "Game.h"
+#include "Collider.h"
 
 #define SPEED M_PI/4
 #define DISTANCE 200
@@ -11,6 +12,8 @@
 
 Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) : Component(associated), alienCenter(alienCenter)
 {
+    associated.AddComponent(new Collider(associated));
+
     Sprite* minionSprite = new Sprite(associated, "assets/img/minion.png");
     double randomScale = 1.0 + rand() / (RAND_MAX/(0.5));
     minionSprite->SetScaleX(randomScale, randomScale);

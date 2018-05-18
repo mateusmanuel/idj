@@ -1,15 +1,18 @@
 #include "Bullet.h"
 
 #include "Sprite.h"
+#include "Collider.h"
 
 Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite, int frameCount, float frameTime) : Component(associated), damage(damage), distanceLeft(maxDistance)
 {
+    associated.AddComponent(new Collider(associated));
+
     Sprite* spriteComponent = new Sprite(associated, sprite, frameCount, frameTime);
     associated.AddComponent(spriteComponent);
 
     associated.box.h = spriteComponent->GetHeight();
     associated.box.w = spriteComponent->GetWidth();
-    associated.angleDeg = angle * (180/M_PI);
+    associated.angleDeg = angle * (180 / M_PI);
 
     this->speed.x = speed * cos(angle);
     this->speed.y = speed * sin(angle);

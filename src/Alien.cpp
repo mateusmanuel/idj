@@ -5,12 +5,15 @@
 #include "Camera.h"
 #include "Game.h"
 #include "Minion.h"
+#include "Collider.h"
 
 #define EPS 1
 #define SPEED 5
 
 Alien::Alien(GameObject& associated, int nMinions) : Component(associated)
 {
+    associated.AddComponent(new Collider(associated));
+
     Sprite* alienSprite = new Sprite(associated, "assets/img/alien.png");
     associated.AddComponent(alienSprite);
     

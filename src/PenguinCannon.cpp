@@ -6,12 +6,15 @@
 #include "Bullet.h"
 #include "Game.h"
 #include "State.h"
+#include "Collider.h"
 
 #define BULLET_SPEED 20
 #define BULLET_DAMAGE 5
 
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody) : Component(associated), pbody(penguinBody)
 {
+    associated.AddComponent(new Collider(associated));
+
     Sprite* sprite = new Sprite(associated, "assets/img/cubngun.png");
     associated.AddComponent(sprite);
 
