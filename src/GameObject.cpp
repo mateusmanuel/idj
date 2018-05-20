@@ -75,5 +75,8 @@ Component* GameObject::GetComponent(std::string type)
 
 void GameObject::NotifyCollision(GameObject& other)
 {
-    
+	for (auto cpt : components)
+    {
+		cpt->NotifyCollision(other);
+	}
 }

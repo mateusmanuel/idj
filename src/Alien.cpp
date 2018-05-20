@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Minion.h"
 #include "Collider.h"
+#include "Bullet.h"
 
 #define EPS 1
 #define SPEED 5
@@ -54,12 +55,12 @@ void Alien::Update(float dt)
 {
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON))
     {
-        taskQueue.emplace(Alien::Action(Action::ActionType::SHOOT , InputManager::GetInstance().GetMouseX() - Camera::pos.x,InputManager::GetInstance().GetMouseY() - Camera::pos.y));
+        taskQueue.emplace(Alien::Action(Action::ActionType::SHOOT , InputManager::GetInstance().GetMouseX() + Camera::pos.x,InputManager::GetInstance().GetMouseY() + Camera::pos.y));
     }
 
     if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON))
     {
-        taskQueue.emplace(Alien::Action(Action::ActionType::MOVE , InputManager::GetInstance().GetMouseX() - Camera::pos.x,InputManager::GetInstance().GetMouseY() - Camera::pos.y));
+        taskQueue.emplace(Alien::Action(Action::ActionType::MOVE , InputManager::GetInstance().GetMouseX() + Camera::pos.x, InputManager::GetInstance().GetMouseY() + Camera::pos.y));
     }
 
     if(not taskQueue.empty())
@@ -128,4 +129,16 @@ Minion* Alien::GetClosestMinion(Vec2 pos)
     }
 
     return (Minion*)minionGOClose->GetComponent("Minion");
+}
+
+void Alien::NotifyCollision(GameObject& other)
+{
+	Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
+	if(bullet != nullptr)
+    {
+		if(not bullet->targetsPlayer)
+        {
+			hp -= bullet->GetDamage();
+		}
+	}
 }

@@ -6,6 +6,8 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Collider.h"
+#include "Bullet.h"
+#include "Camera.h"
 
 #define MAX_LINEAR_SPEED 50.f
 #define ANGULAR_VELOCITY M_PI/16
@@ -82,6 +84,7 @@ void PenguinBody::Update(float dt)
     {
         associated.RequestDelete();
         pcannon.lock()->RequestDelete();
+        Camera::Unfollow();
     }
 }
 
@@ -93,4 +96,16 @@ void PenguinBody::Render()
 bool PenguinBody::Is(std::string type)
 {
     return type == "PenguinBody";
+}
+
+void PenguinBody::NotifyCollision(GameObject& other)
+{
+	Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
+	if(bullet != nullptr)
+    {
+		if(bullet->targetsPlayer) 
+        {
+			hp -= bullet->GetDamage();
+		}
+	}
 }

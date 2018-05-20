@@ -39,6 +39,7 @@ class Alien : public Component
         bool Is(std::string type);
 
         Minion* GetClosestMinion(Vec2 pos);
+        void NotifyCollision(GameObject& other);
 };
 
 
