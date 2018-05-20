@@ -12,6 +12,8 @@
 #include "PenguinBody.h"
 #include "Collider.h"
 #include "Collision.h"
+#include "TitleState.h"
+#include "Game.h"
 
 StageState::StageState()
 {
@@ -76,13 +78,11 @@ void StageState::Update(float dt)
 
 	if(InputManager::GetInstance().KeyPress(SDLK_ESCAPE) || InputManager::GetInstance().QuitRequested())
 	{
-		quitRequested = true;
+		TitleState* titleState = new TitleState();
+        Game::GetInstance().Push(titleState);
 	}
 
-	for(int i = 0; i < (int) objectArray.size(); ++i)
-	{
-		objectArray[i]->Update(dt);
-	}
+	UpdateArray(dt);
 
 	for(int i = 0; i < (int) objectArray.size(); ++i) 
 	{
@@ -116,9 +116,6 @@ void StageState::Update(float dt)
 
 void StageState::Render()
 {
- 	// bg->Render();
-	// map->Render();
-
 	for(int i = 0; i < (int) objectArray.size(); ++i)
 	{
 		if(objectArray[i]->GetComponent("TileMap") != nullptr)
