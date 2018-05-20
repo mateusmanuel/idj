@@ -10,6 +10,7 @@
 
 #define BULLET_SPEED 20
 #define BULLET_DAMAGE 5
+#define COOLDOWN 2
 
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody) : Component(associated), pbody(penguinBody)
 {
@@ -20,6 +21,8 @@ PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> p
 
     associated.box.h = sprite->GetHeight();
     associated.box.w = sprite->GetWidth();
+
+    timer = new Timer();
 }
 
 void PenguinCannon::Start()
@@ -28,6 +31,8 @@ void PenguinCannon::Start()
 
 void PenguinCannon::Update(float dt)
 {
+    timer->Update(dt);
+
     if(pbody.lock() == nullptr)
     {
         associated.RequestDelete();
@@ -39,9 +44,10 @@ void PenguinCannon::Update(float dt)
         
     associated.angleDeg = (180 / M_PI) * atan2((InputManager::GetInstance().GetMouseY() + Camera::pos.y - associated.box.Center().y), (InputManager::GetInstance().GetMouseX() + Camera::pos.x - associated.box.Center().x));
 
-    if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON))
+    if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) && timer->Get() > COOLDOWN)
     {
         Shoot();
+        timer->Restart();
     }
 }
 
