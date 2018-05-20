@@ -8,8 +8,8 @@ class Bullet : public Component
 {
     private:
         Vec2 speed;
-        float distanceLeft;
         int damage;
+        float distanceLeft;
 
     public:
         Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite, int frameCount, float frameTime, bool targetsPlayer);

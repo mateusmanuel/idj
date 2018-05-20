@@ -7,6 +7,7 @@
 
 #include "Component.h"
 #include "GameObject.h"
+#include "Timer.h"
 
 class Sprite : public Component
 {
@@ -22,9 +23,12 @@ class Sprite : public Component
         float timeElapsed;
         float frameTime;
 
+        Timer selfDestructCount;
+		float secondsToSelfDestruct;
+
     public:
         Sprite(GameObject& associated);
-        Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1.f);
+        Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1.f, float secondsToSelfDestruct = 0);
         ~Sprite();
 
         void Open(string file);

@@ -8,6 +8,7 @@
 #include "Collider.h"
 #include "Bullet.h"
 #include "Camera.h"
+#include "Sound.h"
 
 #define MAX_LINEAR_SPEED 50.f
 #define ANGULAR_VELOCITY M_PI/16
@@ -82,6 +83,17 @@ void PenguinBody::Update(float dt)
 
     if(hp <= 0)
     {
+        GameObject* penguinDeath = new GameObject();
+		penguinDeath->box.x = associated.box.x;
+		penguinDeath->box.y = associated.box.y;
+
+		penguinDeath->AddComponent(new Sprite(*penguinDeath, "assets/img/penguindeath.png", 5, 0.5, 2.5));
+		Sound* sound = new Sound(*penguinDeath, "assets/audio/boom.wav");
+        sound->Play();
+        penguinDeath->AddComponent(sound);
+
+        Game::GetInstance().GetState().AddObject(penguinDeath);
+
         associated.RequestDelete();
         pcannon.lock()->RequestDelete();
         Camera::Unfollow();
@@ -108,4 +120,9 @@ void PenguinBody::NotifyCollision(GameObject& other)
 			hp -= bullet->GetDamage();
 		}
 	}
+}
+
+Vec2 PenguinBody::Center()
+{
+    return associated.box.Center();
 }

@@ -27,6 +27,7 @@ class PenguinBody : public Component
         bool Is(std::string type);
 
         void NotifyCollision (GameObject& other);
+        Vec2 Center();
 };
 
 #endif

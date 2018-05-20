@@ -14,4 +14,4 @@ class Timer
         float Get();
 };
 
-#endif;
+#endif

@@ -8,26 +8,21 @@
 #include "Component.h"
 #include "Vec2.h"
 #include "Minion.h"
+#include "Timer.h"
 
 class Alien : public Component
 {
     private:
-        class Action 
-        {
-            public:
-                enum ActionType {MOVE, SHOOT};
-                
-                Action(ActionType type, float x, float y);
-                
-                ActionType type;
-                Vec2 pos;
-        };
+        enum AlienState {MOVING, RESTING};
 
         Vec2 speed;
         int hp;
 
-        std::queue<Action> taskQueue;
         std::vector<std::weak_ptr<GameObject> > minionArray;
+
+        AlienState state;
+        Timer restTimer;
+        Vec2 destination;
 
     public:
         Alien(GameObject& associated, int nMinions);
@@ -40,6 +35,8 @@ class Alien : public Component
 
         Minion* GetClosestMinion(Vec2 pos);
         void NotifyCollision(GameObject& other);
+
+        static int alienCount;
 };
 
 

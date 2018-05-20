@@ -9,7 +9,7 @@ Sprite::Sprite(GameObject& associated) : Component(associated)
     scale = Vec2(1.f, 1.f);
 }
 
-Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime) : Sprite(associated)
+Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime, float secondsToSelfDestruct) : Sprite(associated)
 {
     Open(file);
 
@@ -18,6 +18,7 @@ Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float f
     
     timeElapsed = 0.f;
     currentFrame = 0;
+    this->secondsToSelfDestruct = secondsToSelfDestruct;
 }
 
 Sprite::~Sprite()
@@ -53,7 +54,7 @@ void Sprite::Render()
 void Sprite::Render(float x, float y)
 {
     //printf("Angle: %lf\n", associated.angleDeg);
-    SDL_Rect destRect = SDL_Rect {(int)x, (int)y, clipRect.w * scale.x, clipRect.h * scale.y};
+    SDL_Rect destRect = SDL_Rect {(int)x, (int)y, (int)(clipRect.w * scale.x), (int)(clipRect.h * scale.y)};
     SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
 }
 
@@ -64,6 +65,16 @@ bool Sprite::Is(std::string type)
 
 void Sprite::Update(float dt) 
 {
+    if(secondsToSelfDestruct > 0)
+    {
+		selfDestructCount.Update(dt);
+
+		if(selfDestructCount.Get() >= secondsToSelfDestruct)
+        {
+			associated.RequestDelete();
+		}
+	}
+
     timeElapsed += dt;
 
     if(timeElapsed > frameTime)
