@@ -29,12 +29,12 @@ void Sprite::Open(string file)
 {
     if(texture != nullptr)
     {
-        SDL_DestroyTexture(texture);
+        SDL_DestroyTexture(texture.get());
     }
 
     texture = Resources::GetImage(file);
 
-    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+    SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
 
     SetClip(0, 0, width, height);
 }
@@ -55,7 +55,7 @@ void Sprite::Render(float x, float y)
 {
     //printf("Angle: %lf\n", associated.angleDeg);
     SDL_Rect destRect = SDL_Rect {(int)x, (int)y, (int)(clipRect.w * scale.x), (int)(clipRect.h * scale.y)};
-    SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &destRect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture.get(), &clipRect, &destRect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
 }
 
 bool Sprite::Is(std::string type)

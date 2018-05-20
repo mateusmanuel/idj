@@ -1,11 +1,11 @@
 #include "Resources.h"
 #include "Game.h"
 
-std::unordered_map<std::string, SDL_Texture*> Resources::imageTable;
+std::unordered_map<std::string, std::shared_ptr<SDL_Texture> > Resources::imageTable;
 std::unordered_map<std::string, Mix_Music*> Resources::musicTable;
 std::unordered_map<std::string, Mix_Chunk*> Resources::soundTable;
 
-SDL_Texture* Resources::GetImage (std::string file)
+std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file)
 {
     auto search = imageTable.find(file);
     if(search != imageTable.end())
@@ -17,24 +17,27 @@ SDL_Texture* Resources::GetImage (std::string file)
     if(texture == nullptr)
     {
         printf("[ERROR] IMG_LoadTexture: %s\n", SDL_GetError());
-        return texture;
+        return std::shared_ptr<SDL_Texture>(texture, [](SDL_Texture* ptr) { SDL_DestroyTexture(ptr); });
     }
 
-    imageTable.insert({file, texture});
-    return texture;
+    imageTable.insert({file, std::shared_ptr<SDL_Texture>(texture, [](SDL_Texture* ptr) { SDL_DestroyTexture(ptr); })});
+    return imageTable[file];
 }
 
 void Resources::ClearImages()
 {
     for(auto image: imageTable)
     {
-        SDL_DestroyTexture(image.second);
+        if(image.second.unique())
+        {
+            imageTable.erase(image.first);
+        }
     }
 
     imageTable.clear();
 }
 
-Mix_Music* Resources::GetMusic (std::string file)
+Mix_Music* Resources::GetMusic(std::string file)
 {
     auto search = musicTable.find(file);
     if(search != musicTable.end())
@@ -63,7 +66,7 @@ void Resources::ClearMusics()
     musicTable.clear();
 }
 
-Mix_Chunk* Resources::GetSound (std::string file)
+Mix_Chunk* Resources::GetSound(std::string file)
 {
     auto search = soundTable.find(file);
     if(search != soundTable.end())
