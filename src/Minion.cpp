@@ -73,6 +73,6 @@ void Minion::Shoot(Vec2 target)
     Bullet* bullet = new Bullet(*bulletGO, atan2(target.y - associated.box.y, target.x - associated.box.x), BULLET_SPEED, BULLET_DAMAGE, associated.box.Center().Distance(target), "assets/img/minionbullet2.png", 3, 1.f, true);
     bulletGO->AddComponent(bullet);
 
-    State &state = Game::GetInstance().GetState();
+    State &state = Game::GetInstance().GetCurrentState();
     state.AddObject(bulletGO); 
 }

@@ -59,7 +59,7 @@ void Game::Init(string title, int width, int height)
         return;
     }
 
-    state = new State();
+    storedState = nullptr;
     dt = 0.f;
     frameStart = SDL_GetTicks();
 }
@@ -73,12 +73,24 @@ Game::~Game()
     IMG_Quit();
     SDL_Quit();
 
-    delete state;
+    if(storedState != nullptr)
+    {
+        delete storedState;
+    }
+
+    while(not stateStack.empty())
+    {
+        stateStack.pop();
+    }
+
+    Resources::ClearSounds();
+    Resources::ClearMusics();
+    Resources::ClearImages(); 
 }
 
-State& Game::GetState()
+State& Game::GetCurrentState()
 {
-    return *state;
+    return *stateStack.top();
 }
 
 SDL_Renderer* Game::GetRenderer()
@@ -86,17 +98,49 @@ SDL_Renderer* Game::GetRenderer()
     return renderer;
 }
 
+void Game::Push(State* state)
+{
+    storedState = state;
+}
+
 void Game::Run()
 {
-    state->Start();
-    while(not state->QuitRequested())
+    if(storedState == nullptr)
     {
+        return;
+    }
+    
+    stateStack.push((std::unique_ptr<State>)storedState);
+
+    while(not stateStack.empty() && not stateStack.top()->QuitRequested())
+    {
+        if(stateStack.top()->PopRequested())
+        {
+            stateStack.pop();
+            if(not stateStack.empty())
+            {
+                stateStack.top()->Resume();
+            }
+        }
+
+        if(stateStack.empty())
+            break;
+
+        if(storedState != nullptr)
+        {
+            stateStack.top()->Pause();
+            stateStack.push((std::unique_ptr<State>)storedState);
+            stateStack.top()->Start();
+            storedState = nullptr;
+        }
+        
         CalculateDeltaTime();
-        state->Render();
+        stateStack.top()->Render();
         InputManager::GetInstance().Update();
-        state->Update(dt);
+        stateStack.top()->Update(dt);
 
         SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
 
         SDL_Delay(33);
     }

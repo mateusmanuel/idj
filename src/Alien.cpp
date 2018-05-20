@@ -38,7 +38,7 @@ Alien::Alien(GameObject& associated, int nMinions) : Component(associated)
 
 void Alien::Start()
 {  
-    State &state = Game::GetInstance().GetState();
+    State &state = Game::GetInstance().GetCurrentState();
 
     std::weak_ptr<GameObject> alienWeakPtr(state.GetObjectPtr(&associated));
     for(int i = 0; i < (int) minionArray.size(); ++i)
@@ -107,7 +107,7 @@ void Alien::Update(float dt)
         sound->Play();
         alienDeath->AddComponent(sound);
 
-        Game::GetInstance().GetState().AddObject(alienDeath);
+        Game::GetInstance().GetCurrentState().AddObject(alienDeath);
 
         associated.RequestDelete();
     }

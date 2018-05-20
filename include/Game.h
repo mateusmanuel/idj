@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <iostream>
+#include <stack>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -18,7 +19,9 @@ class Game
     static Game* instance;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    State* state;
+    State* storedState;
+    std::stack<std::unique_ptr<State>> stateStack;
+
     int frameStart;
     float dt;
     void CalculateDeltaTime();
@@ -33,7 +36,10 @@ class Game
     static Game& GetInstance();
     void Run();
     SDL_Renderer* GetRenderer();
-    State& GetState();
+
+    State& GetCurrentState();
+    void Push(State* state);
+    
     float GetDeltaTime();
 
     int GetHeight();

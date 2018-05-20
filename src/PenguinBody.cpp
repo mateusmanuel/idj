@@ -36,11 +36,10 @@ PenguinBody::~PenguinBody()
 
 void PenguinBody::Start()
 {
-    State &state = Game::GetInstance().GetState();
+    State &state = Game::GetInstance().GetCurrentState();
 
     GameObject* penguinCannonGO = new GameObject();
     penguinCannonGO->AddComponent(new PenguinCannon(*penguinCannonGO, state.GetObjectPtr(&associated)));
-
 
     pcannon = state.AddObject(penguinCannonGO); 
 }
@@ -92,7 +91,7 @@ void PenguinBody::Update(float dt)
         sound->Play();
         penguinDeath->AddComponent(sound);
 
-        Game::GetInstance().GetState().AddObject(penguinDeath);
+        Game::GetInstance().GetCurrentState().AddObject(penguinDeath);
 
         associated.RequestDelete();
         pcannon.lock()->RequestDelete();
