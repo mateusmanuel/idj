@@ -42,6 +42,13 @@ StageState::StageState()
 	alienGO->AddComponent(alien);
 	objectArray.emplace_back(alienGO);
 
+	alienGO = new GameObject();
+	alien = new Alien(*alienGO, 4);
+	alienGO->box.x = 996;
+	alienGO->box.y = 980;
+	alienGO->AddComponent(alien);
+	objectArray.emplace_back(alienGO);
+
 	GameObject* penguins = new GameObject();
     PenguinBody* penguinBody = new PenguinBody(*penguins);
 	penguinBody->player = penguinBody;

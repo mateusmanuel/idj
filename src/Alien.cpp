@@ -55,7 +55,6 @@ void Alien::Start()
 Alien::~Alien()
 {
     minionArray.clear();
-    alienCount--;
 }
 
 void Alien::Update(float dt)
@@ -110,13 +109,17 @@ void Alien::Update(float dt)
         alienDeath->AddComponent(sound);
 
         Game::GetInstance().GetCurrentState().AddObject(alienDeath);
-
         associated.RequestDelete();
 
-        Camera::pos = Vec2(0,0);
-        GameData::playerVictory = true;
-        EndState *endState = new EndState();
-        Game::GetInstance().Push(endState);
+        Alien::alienCount--;
+
+        if(Alien::alienCount == 0)
+        {
+            Camera::pos = Vec2(0,0);
+            GameData::playerVictory = true;
+            EndState *endState = new EndState();
+            Game::GetInstance().Push(endState);
+        }
     }
 }
 

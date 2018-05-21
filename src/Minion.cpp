@@ -6,7 +6,7 @@
 #include "Collider.h"
 
 #define SPEED M_PI/4
-#define DISTANCE 200
+#define DISTANCE 150
 #define BULLET_SPEED 20
 #define BULLET_DAMAGE 5
 
@@ -22,8 +22,6 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, fl
     std::shared_ptr<GameObject> alienGO(this->alienCenter.lock());
     associated.box.h = minionSprite->GetHeight();
     associated.box.w = minionSprite->GetWidth();
-    associated.box.x = alienGO->box.x;
-    associated.box.y = alienGO->box.y;
 
     arc = arcOffsetDeg;
 }

@@ -12,7 +12,9 @@
 #include "EndState.h"
 #include "GameData.h"
 
-#define MAX_LINEAR_SPEED 50.f
+#include <algorithm>
+
+#define MAX_LINEAR_SPEED 10.f
 #define ANGULAR_VELOCITY M_PI/16
 
 PenguinBody* PenguinBody::player;
@@ -26,9 +28,11 @@ PenguinBody::PenguinBody(GameObject& associated) : Component(associated)
 
     associated.box.h = sprite->GetHeight();
     associated.box.w = sprite->GetWidth();
-
+    
+    angle = 0;
     player = this;
     hp = 100;
+    linearSpeed = ANGULAR_VELOCITY;
 }
 
 PenguinBody::~PenguinBody()
@@ -81,6 +85,9 @@ void PenguinBody::Update(float dt)
 
     associated.box.x += speed.x;
     associated.box.y += speed.y;
+
+    associated.box.x = std::max(0.f, std::min(1408.f - associated.box.w, associated.box.x));
+    associated.box.y = std::max(0.f, std::min(1280.f - associated.box.h, associated.box.y));
 
     if(hp <= 0)
     {
