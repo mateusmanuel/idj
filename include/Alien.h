@@ -23,9 +23,10 @@ class Alien : public Component
         AlienState state;
         Timer restTimer;
         Vec2 destination;
+        float timeOffset;
 
     public:
-        Alien(GameObject& associated, int nMinions);
+        Alien(GameObject& associated, int nMinions, float timeOffset = 0.f);
         ~Alien();
         
         void Start();

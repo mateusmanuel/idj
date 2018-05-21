@@ -2,6 +2,7 @@
 #define SOUND_H
 
 #include <iostream>
+#include <memory>
 
 #include "SDL2/SDL_mixer.h"
 
@@ -13,7 +14,7 @@ using std::string;
 class Sound: public Component
 {
     private:
-        Mix_Chunk* chunk;
+        std::shared_ptr<Mix_Chunk> chunk;
         int channel;
 
     public:

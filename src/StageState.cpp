@@ -36,14 +36,14 @@ StageState::StageState()
 	objectArray.emplace_back(map);
 
 	GameObject* alienGO = new GameObject();
-	Alien* alien = new Alien(*alienGO, 6);
+	Alien* alien = new Alien(*alienGO, 6, 5);
 	alienGO->box.x = 512;
 	alienGO->box.y = 300;
 	alienGO->AddComponent(alien);
 	objectArray.emplace_back(alienGO);
 
 	alienGO = new GameObject();
-	alien = new Alien(*alienGO, 4);
+	alien = new Alien(*alienGO, 4, 2.5);
 	alienGO->box.x = 996;
 	alienGO->box.y = 980;
 	alienGO->AddComponent(alien);

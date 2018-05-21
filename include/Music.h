@@ -2,6 +2,7 @@
 #define MUSIC_H
 
 #include <iostream>
+#include <memory>
 
 #include "SDL2/SDL_mixer.h"
 
@@ -10,7 +11,7 @@ using std::string;
 class Music
 {
     private:
-        Mix_Music* music;
+        std::shared_ptr<Mix_Music> music;
 
     public:
         Music();

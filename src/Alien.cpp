@@ -14,11 +14,10 @@
 
 #define EPS 1
 #define SPEED 5
-#define COOLDOWN 2
 
 int Alien::alienCount = 0;
 
-Alien::Alien(GameObject& associated, int nMinions) : Component(associated)
+Alien::Alien(GameObject& associated, int nMinions, float timeOffset) : Component(associated), timeOffset(timeOffset)
 {
     state = RESTING;
 
@@ -65,7 +64,7 @@ void Alien::Update(float dt)
         {
 			restTimer.Update(dt);
 		
-        	if (restTimer.Get() > COOLDOWN)
+        	if (restTimer.Get() > timeOffset)
             {
 				destination = PenguinBody::player->Center();
 				state = MOVING;
