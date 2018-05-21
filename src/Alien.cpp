@@ -9,6 +9,8 @@
 #include "Bullet.h"
 #include "Sound.h"
 #include "PenguinBody.h"
+#include "GameData.h"
+#include "EndState.h"
 
 #define EPS 1
 #define SPEED 5
@@ -110,6 +112,11 @@ void Alien::Update(float dt)
         Game::GetInstance().GetCurrentState().AddObject(alienDeath);
 
         associated.RequestDelete();
+
+        Camera::pos = Vec2(0,0);
+        GameData::playerVictory = true;
+        EndState *endState = new EndState();
+        Game::GetInstance().Push(endState);
     }
 }
 

@@ -9,6 +9,8 @@
 #include "Bullet.h"
 #include "Camera.h"
 #include "Sound.h"
+#include "EndState.h"
+#include "GameData.h"
 
 #define MAX_LINEAR_SPEED 50.f
 #define ANGULAR_VELOCITY M_PI/16
@@ -96,6 +98,11 @@ void PenguinBody::Update(float dt)
         associated.RequestDelete();
         pcannon.lock()->RequestDelete();
         Camera::Unfollow();
+        Camera::pos = Vec2(0,0);
+
+        GameData::playerVictory = false;
+        EndState *endState = new EndState();
+        Game::GetInstance().Push(endState);
     }
 }
 

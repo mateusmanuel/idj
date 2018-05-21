@@ -78,6 +78,7 @@ void StageState::Update(float dt)
 
 	if(InputManager::GetInstance().KeyPress(SDLK_ESCAPE) || InputManager::GetInstance().QuitRequested())
 	{
+		popRequested = true;
 		TitleState* titleState = new TitleState();
         Game::GetInstance().Push(titleState);
 	}

@@ -6,6 +6,7 @@
 #include "StageState.h"
 #include "Game.h"
 #include "Camera.h"
+#include "Text.h"
 
 TitleState::TitleState()
 {
@@ -20,12 +21,19 @@ TitleState::TitleState()
 
     Camera::Unfollow();
     Camera::pos = Vec2(0, 0);
+
+    GameObject* titleMessage = new GameObject();
+    titleMessage->AddComponent(new Text(*titleMessage, "assets/font/Call me maybe.ttf", 80, Text::TextStyle::BLENDED, "Press Space to begin", {0, 0, 0, 255}, 3.0));
+    titleMessage->box.y = Game::GetInstance().GetHeight()/1.3;
+    titleMessage->box.x = Game::GetInstance().GetWidth()/6;
+    objectArray.emplace_back(titleMessage);
 }
 
 void TitleState::Update(float dt)
 {
     if(InputManager::GetInstance().KeyPress(SDLK_ESCAPE) || InputManager::GetInstance().QuitRequested())
     {
+        popRequested = true;
 		quitRequested = true;
 	}
 

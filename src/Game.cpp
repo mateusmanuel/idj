@@ -1,8 +1,10 @@
 #include "Game.h"
 #include "Resources.h"
 #include "InputManager.h"
+#include "GameData.h"
 
 Game* Game::instance = nullptr;
+bool GameData::playerVictory = false;
 
 Game& Game::GetInstance()
 {
@@ -59,6 +61,12 @@ void Game::Init(string title, int width, int height)
         return;
     }
 
+    if(TTF_Init() != 0)
+    {
+        printf("[ERROR] TTF_Init: %s\n", SDL_GetError());
+        return;   
+    }
+
     storedState = nullptr;
     dt = 0.f;
     frameStart = SDL_GetTicks();
@@ -66,6 +74,7 @@ void Game::Init(string title, int width, int height)
 
 Game::~Game()
 {    
+    TTF_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_CloseAudio();
